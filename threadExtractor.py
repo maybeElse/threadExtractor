@@ -64,7 +64,7 @@ def threadHunt():
     
     print(len(chains))
 
-    if input("Output files? [Y/N] ").lower == "y":
+    if input("Output files? [Y/N] ").lower() == "y":
         for key in chains:
             with open(key + " " + library[key]["created_at"].replace(":","-")+".txt", "w",  encoding="utf8", errors ="replace") as file:
                 file.write(compileThread(key))
