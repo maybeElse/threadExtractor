@@ -140,13 +140,12 @@ def indexHunt():
 
                     id = re.search(tweet_id_finder, url).group(1)
                     
-                    filename = str(count).rjust(4, '0') + " " + tweet + ".txt"
-                    filename = re.sub(tco_hunter, '', filename)
+                    filename = str(count).rjust(4, '0') + " " + re.sub(tco_hunter, '', tweet).strip() + ".txt"
                     filename = filename.replace("///", "-")
 
                     filename = ''.join(c for c in filename if c in valid_chars)
 
-                    print("[{}/{}]: {}".format(str(count).rjust(4, '0'),str(len(index_thread))).rjust(4, '0'),filename)
+                    print("[{}/{}]: {}".format(str(count).rjust(4, '0'),str(len(index_thread)).rjust(4, '0'),filename))
 
                     if id in chains:
                         indexed_threads[id] = chains[id]
