@@ -11,7 +11,7 @@ a small python script for digesting twitter archives
 this script offers three modes:
 - \[S\]earch: It can attempt to find *every* thread in your twitter archive and export them as text files.
 - \[H\]unt: Given the id of the last tweet in a thread, it can extract the rest of that thread and export it as a text file.
-- \[I\]ndex: Given the id of an index thread (ie: a thread composed of qrts of other threads), it can extract each qrted thread and expot them as text files (with names reflecting any caption present in the index).
+- \[I\]ndex: Given the id of the last tweet in an index thread (ie: a thread composed of qrts of other threads), it can extract each qrted thread and export them as text files (with names reflecting any caption present in the index).
 
 ## Flaws:
 - No provisions are made to handle branching threads and I haven't tested how it reacts to them. Some tweets may be lost.
