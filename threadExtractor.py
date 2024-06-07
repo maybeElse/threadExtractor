@@ -114,7 +114,7 @@ def indexHunt():
         index_thread = [thread_marker]
         if thread_marker in library:
             while "in_reply_to_status_id" in library.get(thread_marker):
-               index_thread.append(library.get(thread_marker)["full_text"])
+               index_thread.append(library.get(thread_marker))
                thread_marker = library.get(thread_marker)["in_reply_to_status_id"]
             index_thread = list(reversed(index_thread))
             break
@@ -129,35 +129,39 @@ def indexHunt():
         valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
         count = 0
         for tweet in index_thread:
-            # print(tweet)
-            if re.search(tco_hunter, tweet):
-                url = re.search(tco_hunter, tweet).group(0)
-                url = urlopen(url).url
-                # print(url)
+            print(tweet["full_text"])
+            
+            if re.search(tco_hunter, tweet["full_text"]):
+                #url = re.search(tco_hunter, tweet["full_text"]).group(0)
+                # url = urlopen(url).url
+                url = tweet["entities"]["urls"][0]["expanded_url"]
+                print(url)
                 
                 if re.search(tweet_id_finder, url):
                     count += 1
 
                     id = re.search(tweet_id_finder, url).group(1)
                     
-                    filename = str(count).rjust(4, '0') + " " + re.sub(tco_hunter, '', tweet).strip() + ".txt"
+                    filename = str(count).rjust(4, '0') + " " + re.sub(tco_hunter, '', tweet["full_text"]).strip() + ".txt"
                     filename = filename.replace("///", "-")
 
                     filename = ''.join(c for c in filename if c in valid_chars)
+
+                    file_head = re.sub(tco_hunter, '', tweet["full_text"]).strip() + "\n\n"
 
                     print("[{}/{}]: {}".format(str(count).rjust(4, '0'),str(len(index_thread)).rjust(4, '0'),filename))
 
                     if id in chains:
                         indexed_threads[id] = chains[id]
                         with open(filename, "w",  encoding="utf8", errors ="replace") as file:
-                            file.write(extractThread(id,chains))
+                            file.write(file_head + extractThread(id,chains))
                         # print(filename)
                         # print(extractThread(id,chains))
                         # print("----")
                     elif id in library:
                         indexed_threads[id] = library.get(id)
                         with open(filename, "w",  encoding="utf8", errors ="replace") as file:
-                            file.write(library.get(id)["full_text"])
+                            file.write(file_head + library.get(id)["full_text"])
                         # print(filename)
                         # print(library.get(id)["full_text"])
                         # print("----")
